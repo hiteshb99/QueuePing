@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1055337282240",
+    "project_id": "queueping",
+    "storage_bucket": "queueping.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055337282240:android:b6a734b99e2d2ce0510b25",
+        "android_client_info": {
+          "package_name": "com.university.queueping"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVt4LINu5YGgNbvvsC5_NnBtAk7ADBFUo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

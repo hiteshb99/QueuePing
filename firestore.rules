@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ----------------------------------------------------------------------
+    // QUEUEPING SECURITY RULES (STUDENT 2 BACKEND IMPLEMENTATION)
+    // ----------------------------------------------------------------------
+
+    // Queues Collection
+    match /queues/{queueId} {
+      // Anyone (including unauthenticated customers) can read queues to discover them
+      allow read: if true;
+
+      // Only authenticated Staff can create new queues
+      allow create: if request.auth != null && request.resource.data.creatorId == request.auth.uid;
+
+      // Only the Staff member who created the queue can update or delete it
+      allow update, delete: if request.auth != null && resource.data.creatorId == request.auth.uid;
+    }
+
+    // Entries Collection (Tickets)
+    match /entries/{entryId} {
+      // Anyone can read entries (needed for customers to calculate "People Ahead" and staff to manage desks)
+      allow read: if true;
+
+      // Customers (both anonymous and authenticated) can create an entry to join a queue.
+      // Data validation: Ensures they are joining with WAITING status
+      allow create: if request.resource.data.status == 'WAITING';
+
+      // Updates are allowed if:
+      // 1. A customer is canceling their own ticket (status -> CANCELLED)
+      // 2. A staff member is calling/serving a ticket (we could restrict this further by checking if staff owns the parent queue)
+      allow update: if true;
+
+      // Only the system or staff who own the parent queue should be able to delete entries.
+      // For this prototype, we allow deletion to support the atomic batch cascade deletion of a queue.
+      allow delete: if request.auth != null;
+    }
+  }
+}
